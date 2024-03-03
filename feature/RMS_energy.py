@@ -44,12 +44,10 @@ def run(window_len, hop_len, bits, waveform, output_path):
 
 
 if __name__ == "__main__" :
-    wave_path = r"D:\PyLearning\audio\Liangzhu .wav"
-    #wave_path = r"D:\PyLearning\audio\kick.wav"
-    #wave_path = r"D:\PyLearning\audio\test_beat.wav"
+    wave_path = r"D:\ROP-Audio-Vibration\audio\Liangzhu.wav"
     waveform, sample_rate = librosa.load(wave_path,sr=None)
-    output_file_path = 'D:\PyLearning\output.txt'
+    output_file_path = 'D:\ROP-Audio-Vibration\output.txt'
     rms_generate = RMSGenerate()
-    rms = rms_generate.process_env(waveform)
-    normalized_rms = rms_generate.normalize_env(rms)
+    rms = rms_generate.process_rms(waveform)
+    normalized_rms = rms_generate.normalize_rms(rms)
     rms_generate.save2file(rms=normalized_rms,filename=output_file_path)
