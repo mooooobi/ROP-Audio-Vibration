@@ -42,7 +42,7 @@ class Ser_driver:
     def set_voltage(self,voltage:str):
         if(len(voltage)==2):
             self.voltage=voltage
-        print('voltage is {}'.format(self.voltage))
+        # print('voltage is {}'.format(self.voltage))
     def set_duty(self,enable:bool,duty:int):
         i=0
         if(duty>=0 and duty<=100):
