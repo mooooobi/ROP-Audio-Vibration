@@ -38,8 +38,8 @@ class RMSGenerate:
 
 def run(window_len, hop_len, bits, waveform, output_path):
     rms_generate = RMSGenerate(window_len=window_len, hop_len=hop_len, bits=bits)
-    rms = rms_generate.process_env(waveform)
-    normalized_rms = rms_generate.normalize_env(rms)
+    rms = rms_generate.process_rms(waveform)
+    normalized_rms = rms_generate.normalize_rms(rms)
     rms_generate.save2file(rms=normalized_rms,filename=output_path)
 
 
