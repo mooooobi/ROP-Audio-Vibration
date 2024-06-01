@@ -20,7 +20,7 @@ class Ser_driver:
         self.voltage='7F'
         self.duty='65'
         self.freq='0064'
-        self.tail='8888FFDF'
+        self.tail='9999FFDF'
     def set_mode1(self,isreply:bool):
         if(isreply):
             self.mode1='81'
@@ -42,7 +42,7 @@ class Ser_driver:
     def set_voltage(self,voltage:str):
         if(len(voltage)==2):
             self.voltage=voltage
-        # print('voltage is {}'.format(self.voltage))
+        print('voltage is {}'.format(self.voltage))
     def set_duty(self,enable:bool,duty:int):
         i=0
         if(duty>=0 and duty<=100):
@@ -53,7 +53,7 @@ class Ser_driver:
         print('duty is {}'.format(self.duty))
     def set_frequency(self,frequency:int):
         self.freq='{:04X}'.format(frequency)
-        print('frequency is {}'.format(self.duty))
+        print('frequency is {}'.format(self.freq))
     def send(self):
         total=self.head+self.mode1+self.mode2+self.voltage+self.duty+self.freq+self.tail
         self.ser.write(bytes.fromhex(total))

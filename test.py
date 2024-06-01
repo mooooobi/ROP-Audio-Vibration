@@ -16,7 +16,7 @@ driver=ser_driver.Ser_driver()
 
 driver.set_mode1(False)
 
-driver.set_mode2(ser_driver.Mode.V,ser_driver.Mode.G,ser_driver.Mode.G,ser_driver.Mode.G)
+driver.set_mode2(ser_driver.Mode.G,ser_driver.Mode.V,ser_driver.Mode.G,ser_driver.Mode.G)
 
 # driver.set_voltage('FF')
 
@@ -28,7 +28,7 @@ driver.set_duty(False,50)
 
 # Analyse the audio
 print('now analyse the audio')
-audio='/home/linchi/rop/ROP-Audio-Vibration/audio/staple_stable.wav'
+audio='/home/linchi/rop/ROP-Audio-Vibration/audio/kick.wav'
 output='/tmp/output.txt'
 waveform, sample_rate = librosa.load(audio,sr=None)
 Ampitude_Envelope.run(2048,1024,8,waveform,output)
@@ -36,6 +36,7 @@ Ampitude_Envelope.run(2048,1024,8,waveform,output)
 #prepare to play
 print('now prepare to play')
 sound = AudioSegment.from_file(audio)
+sound = sound+15
 sound.export('/tmp/audio.wav',format='wav')
 wf=wave.open('/tmp/audio.wav','rb')
 
