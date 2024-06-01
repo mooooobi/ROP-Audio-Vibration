@@ -232,8 +232,7 @@ def event_gen(magnitude, freq):
 
     return event
 
-def run(input_path, output_path):
-    waveform, sr = librosa.load(input_path, sr=None)
+def run(waveform, sr, output_path):
     envelopes, magnitudes, num_segs = seg_env_gen(waveform, sr)
     avg_freqs, main_freqs = seg_freq_gen(waveform, sr)
 
@@ -248,8 +247,9 @@ def run(input_path, output_path):
 
 if __name__ == "__main__" :
     filename = r'D:\ROP-Audio-Vibration\audio\Liangzhu.wav'
+    waveform, sr = librosa.load(filename, sr=None) 
     output_path = r'D:\ROP-Audio-Vibration\test\output.txt'
-    run(filename, output_path)
+    run(waveform, sr, output_path)
    
 
 
