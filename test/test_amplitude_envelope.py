@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import hilbert
 
-wave_path = r"D:\PyLearning\audio\Liangzhu .wav"
+wave_path = r"D:\ROP-Audio-Vibration\audio\Liangzhu.wav"
 #wave_path = r"D:\PyLearning\audio\kick.wav"
 #wave_path = r"D:\PyLearning\audio\test_beat.wav"
 waveform, sample_rate = librosa.load(wave_path,sr=None)
@@ -58,8 +58,8 @@ def AE_by_ShannonEnergy(waveform,window_length):
     return waveform_ae
 
 #分帧取最大值的包络生成
-frame_size = 1024
-hop_size = int(frame_size*0.2)
+frame_size = 2048
+hop_size = int(frame_size*0.5)
 waveform_AE = Amplitude_Envelope_max(waveform=waveform,frame_length=frame_size,hop_length=hop_size)
 frame_scale = np.arange(0,len(waveform_AE))
 time_scale = librosa.frames_to_time(frames=frame_scale,hop_length=hop_size)
@@ -87,7 +87,7 @@ binary_strings = [format(int(val), '0{}b'.format(8)) for val in normalized_AE_in
 #打印
 print(f"length:{len(waveform_AE)}\nEnvelope:{normalized_AE_int}\nsample_rate:{sample_rate}")
 #输出文本
-output_file_path = 'D:\PyLearning\output.txt'
+output_file_path = 'D:\ROP-Audio-Vibration\output.txt'
 with open(output_file_path,'w') as file:
     #np.savetxt(file, normalized_AE_int,fmt='%d')
     for a, b in zip(normalized_AE_int, binary_strings):

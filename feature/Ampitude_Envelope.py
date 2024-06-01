@@ -42,13 +42,17 @@ def run(window_len, hop_len, bits, waveform, output_path):
     normalized_envelope = ae_generate.normalize_env(envelope)
     ae_generate.save2file(envelope=normalized_envelope,filename=output_path)
 
+def output_env(window_len, hop_len, bits, waveform):
+    ae_generate = EnvelopeGenerate(window_len=window_len, hop_len=hop_len, bits=bits)
+    envelope = ae_generate.process_env(waveform)
+    return envelope
 
 if __name__ == "__main__" :
-    wave_path = r"D:\PyLearning\audio\Liangzhu .wav"
+    wave_path = r"D:\ROP-Audio-Vibration\audio\Liangzhu.wav"
     #wave_path = r"D:\PyLearning\audio\kick.wav"
     #wave_path = r"D:\PyLearning\audio\test_beat.wav"
     waveform, sample_rate = librosa.load(wave_path,sr=None)
-    output_file_path = 'D:\PyLearning\output.txt'
+    output_file_path = r'D:\ROP-Audio-Vibration\test\output.txt'
     ae_generate = EnvelopeGenerate()
     envelope = ae_generate.process_env(waveform)
     normalized_envelope = ae_generate.normalize_env(envelope)
