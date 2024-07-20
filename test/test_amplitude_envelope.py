@@ -93,13 +93,13 @@ with open(output_file_path,'w') as file:
     for a, b in zip(normalized_AE_int, binary_strings):
         file.write(f"{a}\t{b}\n")
 
-# time = np.arange(0,len(waveform)) / sample_rate
-# plt.figure(figsize=(20,10))
-# librosa.display.waveshow(waveform,color = 'b')
-#plt.plot(time,waveform,color = 'b')
-#plt.plot(time_scale,waveform_AE,color = 'r')
-#plt.title("AE_frame_MAX")
-#librosa.display.waveshow(waveform_AE,sr=sample_rate, color = 'r')
-#plt.plot(time,waveform_AE,color = 'r')
-#plt.title("AE by Hilbert")
-#plt.show()
+time = np.arange(0,len(waveform)) / sample_rate
+plt.figure(figsize=(20,10))
+librosa.display.waveshow(waveform,color = 'b')
+plt.plot(time,waveform,color = 'b')
+plt.plot(time_scale,waveform_AE,color = 'r')
+plt.title("AE_frame_MAX")
+# librosa.display.waveshow(waveform_AE,sr=sample_rate, color = 'r')
+# plt.plot(time,waveform_AE,color = 'r')
+# plt.title("AE by Hilbert")
+plt.show()
