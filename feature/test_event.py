@@ -9,12 +9,12 @@ import numpy as np
 import Ampitude_Envelope
 from scipy.signal import find_peaks
 
-filename = r'D:\ROP-Audio-Vibration\audio\origin.wav'
+filename = r'D:\ROP-Audio-Vibration\audio\unity.mp3'
 waveform, sr = librosa.load(filename, sr=None) 
-output_path = r'D:\ROP-Audio-Vibration\test\output.txt'
+output_path = r'D:\ROP-Audio-Vibration\test\output_event.txt'
 
 #对音频信号分段，每段对应一个event
-event_freq = 2
+event_freq = 5
 segment_length = sr // event_freq
 num_segments = len(waveform) // segment_length
 segments = np.array_split(waveform[:num_segments * segment_length], num_segments)
@@ -81,44 +81,44 @@ segments = np.array_split(waveform[:num_segments * segment_length], num_segments
 #         # print(weighted_avg_frequency)
 
 
- # 执行FFT
-# fft_result = np.fft.fft(segments[14])
-# # 计算频率
-# frequencies = np.fft.fftfreq(len(segments[14]), 1/sr)
-# min_freq_distance_hz = 150
-# min_peak_distance = int(min_freq_distance_hz * len(segments[14]) / sr)
-# peaks, _ = find_peaks(np.abs(fft_result)[:len(segments[14])//2], height=200,distance=min_peak_distance)
-# # 绘制振幅谱图
-# plt.plot(segments[14], label='Waveform')
-# plt.title('Waveform')
-# plt.xlabel('Samples')
-# plt.ylabel('Amplitude')
-# plt.legend()
-
-# plt.figure(figsize=(8, 4))
-# #plt.plot(np.arange(22050), np.abs(fft_result))
-# plt.plot(frequencies[:len(segments[14])//2], np.abs(fft_result)[:len(segments[14])//2])
-# plt.xlabel('Frequency (Hz)')
-# plt.ylabel('Amplitude')
-# plt.title('FFT Result')
-# plt.grid()
-# plt.show()
-
-fft_res = np.fft.fft(waveform)
-frequencies = np.fft.fftfreq(len(waveform), 1/sr)
+#执行FFT
+fft_result = np.fft.fft(segments[36])
+# 计算频率
+frequencies = np.fft.fftfreq(len(segments[36]), 1/sr)
 min_freq_distance_hz = 150
-min_peak_distance = int(min_freq_distance_hz * len(waveform) / sr)
-peaks, _ = find_peaks(np.abs(fft_res)[:len(waveform)//2], height=200,distance=min_peak_distance)
-pos_freqs = frequencies[:len(waveform)//2]
-peak_frequencies = pos_freqs[peaks]
-peak_amplitudes = np.abs(fft_res[peaks])
-print(f"{peaks}\t{len(peaks)}\t{type(peaks)}\n{peak_frequencies}\t{len(peak_frequencies)}\t{type(peak_frequencies)}\n{peak_amplitudes}\t{len(peak_amplitudes)}\t{type(peak_amplitudes)}\n")
+min_peak_distance = int(min_freq_distance_hz * len(segments[36]) / sr)
+peaks, _ = find_peaks(np.abs(fft_result)[:len(segments[36])//2], height=200,distance=min_peak_distance)
+# 绘制振幅谱图
+plt.plot(segments[36], label='Waveform')
+plt.title('Waveform')
+plt.xlabel('Samples')
+plt.ylabel('Amplitude')
+plt.legend()
 
 plt.figure(figsize=(8, 4))
 #plt.plot(np.arange(22050), np.abs(fft_result))
-plt.plot(frequencies[:len(waveform)//2], np.abs(fft_res)[:len(waveform)//2])
+plt.plot(frequencies[:len(segments[36])//2], np.abs(fft_result)[:len(segments[36])//2])
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('Amplitude')
 plt.title('FFT Result')
 plt.grid()
 plt.show()
+
+# fft_res = np.fft.fft(waveform)
+# frequencies = np.fft.fftfreq(len(waveform), 1/sr)
+# min_freq_distance_hz = 150
+# min_peak_distance = int(min_freq_distance_hz * len(waveform) / sr)
+# peaks, _ = find_peaks(np.abs(fft_res)[:len(waveform)//2], height=200,distance=min_peak_distance)
+# pos_freqs = frequencies[:len(waveform)//2]
+# peak_frequencies = pos_freqs[peaks]
+# peak_amplitudes = np.abs(fft_res[peaks])
+# print(f"{peaks}\t{len(peaks)}\t{type(peaks)}\n{peak_frequencies}\t{len(peak_frequencies)}\t{type(peak_frequencies)}\n{peak_amplitudes}\t{len(peak_amplitudes)}\t{type(peak_amplitudes)}\n")
+
+# plt.figure(figsize=(8, 4))
+# #plt.plot(np.arange(22050), np.abs(fft_result))
+# plt.plot(frequencies[:len(waveform)//2], np.abs(fft_res)[:len(waveform)//2])
+# plt.xlabel('Frequency (Hz)')
+# plt.ylabel('Amplitude')
+# plt.title('FFT Result')
+# plt.grid()
+# plt.show()

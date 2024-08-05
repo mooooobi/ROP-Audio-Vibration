@@ -2,9 +2,11 @@ import numpy as np
 import librosa
 import math
 from scipy.signal import find_peaks
+import matplotlib.pyplot as plt
+import timeit
 
-threshold = 150
-event_freq = 2
+threshold = 20
+event_freq = 5
 
 window_len = 2048
 hop_len = 1024
@@ -58,7 +60,7 @@ def myFFT(waveform, sr, threshold):
     positive_freqs = fft_freqs[:len(waveform)//2]
     magnitude = np.abs(fft_result)[:len(waveform)//2]
 
-    min_freq_distance_hz = 50
+    min_freq_distance_hz = 5
     min_peak_distance = int(min_freq_distance_hz * len(waveform) / sr)
 
     peaks, _ = find_peaks(magnitude, height=threshold, distance=min_peak_distance)
@@ -72,13 +74,22 @@ def myFFT(waveform, sr, threshold):
 
     return peak_freqs, peak_amps
 
-def noise_range_gen(center_freq):
+def noise_range_gen(center_freq, fraction=1/6):
      
-    width = center_freq//6
+    # width = center_freq//6
 
-    min_freq = center_freq - width//2
-    max_freq = center_freq + (width - width//2)
+
+    # min_freq = center_freq - width//2
+    # max_freq = center_freq + (width - width//2)
+
+     
+    multiplier = 2 ** fraction
+
+    min_freq = round(center_freq / multiplier)
+    max_freq = round(center_freq * multiplier)
     freq_range = (min_freq, max_freq)
+
+    print(f"{freq_range}")
 
     return freq_range
 
@@ -101,7 +112,7 @@ def freq_map(center_freq):
 
     #假设中心频率范围100到10000，电刺激频率50到300
     nfreq_range = (10, 100)
-    efreq_range = (50, 300)
+    efreq_range = (50, 500)
 
     elec_freq = linear_mapping(int(math.sqrt(center_freq)), nfreq_range, efreq_range)
 
@@ -172,22 +183,72 @@ def pulse_width_map(waveform, sr, event_freq):
 
     return pws
 
+def norm(data, max_value, min_value, bits):
+
+    nor_data = ((data - min_value) / (max_value - min_value)) * (2 ** bits - 1)
+    nor_data = nor_data.astype(int)
+
+    return nor_data
+
+def magnitude_map(waveform, sr, event_freq):
+    #分段
+    segment_length = sr // event_freq
+    num_segments = len(waveform) // segment_length
+    segments = np.array_split(waveform[:num_segments * segment_length], num_segments)
+
+    envelopes = []
+    magnitudes = []
+    rms_energys = []
+    nor_rms_energys = []
+
+    for segment in segments:
+        envelope = output_env(window_len=window_len,hop_len=hop_len,bits=bits,waveform=segment)
+
+        #归一化
+        max_val = np.max(waveform)
+        min_val = 0
+        nor_env = norm(envelope, max_val, min_val, bits)
+        envelopes.append(nor_env)
+
+        #包络详细信息
+        max = np.max(nor_env)
+        min = np.min(nor_env)
+        mean = int(np.mean(nor_env))
+        diff = max - min
+        magnitude = [max, min, mean, diff]
+        magnitudes.append(magnitude)
+
+        #rms energy
+        current_rms = np.sqrt(np.mean(np.square(nor_env)))
+        rms_energys.append(current_rms)
+
+    #rms归一化
+    max_rms = np.max(rms_energys)
+    min_rms = np.min(rms_energys)
+    nor_rms_energys = norm(rms_energys, max_rms, min_rms, bits)
+
+    #map
+    rms_range = (0,255)
+
+    return nor_rms_energys
+
+
 def event_gen(event_freq, waveform, sr, center_freq):
 
     segment_length = sr // event_freq
     num_segments = len(waveform) // segment_length
     segments = np.array_split(waveform[:num_segments * segment_length], num_segments)
 
-    noise_range = noise_range_gen(center_freq)
+    noise_range = noise_range_gen(center_freq,1/6)
 
     trigger = 0
-    pw = 0
+    mag = 0
     elec_freq = 0
-    pulse_widths = []
+    magnitudes = []
     elec_freqs = []
-    events = [elec_freqs, pulse_widths]
+    events = [elec_freqs, magnitudes]
 
-    pws = pulse_width_map(waveform=waveform, sr=sr, event_freq=event_freq)
+    mags = magnitude_map(waveform=waveform, sr=sr, event_freq=event_freq)
 
     for i, segment in enumerate(segments):
         trigger = 0
@@ -202,27 +263,59 @@ def event_gen(event_freq, waveform, sr, center_freq):
         
         if trigger == 0:
             elec_freq = 0
-            pw = 0
+            mag = 0
         elif trigger == 1:
             elec_freq = freq_map(center_freq)
-            pw = pws[i]
+            mag = mags[i]
         
         elec_freqs.append(elec_freq)
-        pulse_widths.append(pw)
+        magnitudes.append(mag)
 
     return events, event_freq
 
+def gen_file(events, output_file_path):
+    with open(output_file_path, "w") as file:
+        for i in range(len(events[0])):
+            file.write(f"{events[0][i]}\t{events[1][i]}\n")
+
+def show_vibration(events):
+    binary_data = [1 if x > 0 else 0 for x in events[0]]
+    labels = [str(i) for i in range(len(events[0]))]
+
+    #计算占比
+    total_count = len(events[0])
+    positive_count = sum(binary_data)
+    percentage_positive = (positive_count / total_count) * 100
+
+    print(f'刺激占比: {percentage_positive:.2f}%')
+
+    #显示刺激时刻
+    plt.figure(figsize=(12, 4))
+    plt.bar(labels, events[1])
+    plt.xticks([])
+    plt.grid()
+    plt.show()
+
 if __name__ == "__main__" :
-    filename = r'D:\ROP-Audio-Vibration\audio\Liangzhu.wav'
+
+    start_time = timeit.default_timer()
+
+    filename = r'D:\ROP-Audio-Vibration\audio\faded.mp3'
+    output_file = r'D:\ROP-Audio-Vibration\test\output_v1.txt'
     waveform, sr = librosa.load(filename, sr=None)
+    
+    end_time = timeit.default_timer()
+    print(f"{end_time - start_time}")
 
-    center_freq = 400
-    noise_range = noise_range_gen(center_freq)
+    center_freq = 8000
+    events, event_freq = event_gen(event_freq=event_freq, waveform=waveform, sr=sr, center_freq=center_freq) 
 
-    events, event_freq = event_gen(event_freq=2, waveform=waveform, sr=sr, center_freq=center_freq) 
 
-    for i in range(len(events[0])):
-        print(f"{events[0][i]}\t{events[1][i]}\n")
+    gen_file(events, output_file)
+    
+    show_vibration(events)
+
+
 
         
 
