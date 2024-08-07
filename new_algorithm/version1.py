@@ -300,7 +300,7 @@ if __name__ == "__main__" :
 
     start_time = timeit.default_timer()
 
-    filename = r'D:\ROP-Audio-Vibration\audio\faded.mp3'
+    filename = r'D:\ROP-Audio-Vibration\audio\walkThruFire.mp3'
     output_file = r'D:\ROP-Audio-Vibration\test\output_v1.txt'
     waveform, sr = librosa.load(filename, sr=None)
     
