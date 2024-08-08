@@ -1,0 +1,39 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.adapterTargetName": "esp32",
+    "idf.customExtraPaths": "D:\\Espressif\\tools\\xtensa-esp-elf-gdb\\14.2_20240403\\xtensa-esp-elf-gdb\\bin;D:\\Espressif\\tools\\riscv32-esp-elf-gdb\\14.2_20240403\\riscv32-esp-elf-gdb\\bin;D:\\Espressif\\tools\\xtensa-esp-elf\\esp-13.2.0_20240530\\xtensa-esp-elf\\bin;D:\\Espressif\\tools\\riscv32-esp-elf\\esp-13.2.0_20240530\\riscv32-esp-elf\\bin;D:\\Espressif\\tools\\esp32ulp-elf\\2.38_20240113\\esp32ulp-elf\\bin;D:\\Espressif\\tools\\cmake\\3.24.0\\bin;D:\\Espressif\\tools\\openocd-esp32\\v0.12.0-esp32-20240318\\openocd-esp32\\bin;D:\\Espressif\\tools\\ninja\\1.11.1;D:\\Espressif\\tools\\idf-exe\\1.0.3;D:\\Espressif\\tools\\ccache\\4.8\\ccache-4.8-windows-x86_64;D:\\Espressif\\tools\\dfu-util\\0.11\\dfu-util-0.11-win64;D:\\Espressif\\tools\\esp-rom-elfs\\20240305",
+    "idf.customExtraVars": {
+        "OPENOCD_SCRIPTS": "D:\\Espressif\\tools\\openocd-esp32\\v0.12.0-esp32-20240318/openocd-esp32/share/openocd/scripts",
+        "IDF_CCACHE_ENABLE": "1",
+        "ESP_ROM_ELF_DIR": "D:\\Espressif\\tools\\esp-rom-elfs\\20240305/"
+    },
+    "idf.espIdfPathWin": "D:/Espressif/frameworks/esp-idf-v5.3/",
+    "idf.openOcdConfigs": [
+        "board/esp32-wrover-kit-3.3v.cfg"
+    ],
+    "idf.pythonBinPathWin": "D:/Espressif/python_env/idf5.3_py3.11_env/Scripts/python.exe",
+    "idf.toolsPathWin": "D:\\Espressif",
+    "files.associations": {
+        "*.vpy": "python",
+        "sdmmc_cmd.h": "c",
+        "sd_protocol_types.h": "c",
+        "sd_test_io.h": "c",
+        "stat.h": "c",
+        "types.h": "c",
+        "sd_pwr_ctrl_by_on_chip_ldo.h": "c",
+        "i2s.h": "c",
+        "compare": "c",
+        "cstdint": "c",
+        "i2s_std.h": "c",
+        "gpio_types.h": "c",
+        "i2s_types.h": "c",
+        "i2s_common.h": "c",
+        "esp_vfs_fat.h": "c",
+        "endian.h": "c",
+        "esp_timer.h": "c",
+        "spin_control.h": "c",
+        "linger.h": "c"
+    },
+    "idf.portWin": "COM3",
+    "idf.flashType": "UART"
+}

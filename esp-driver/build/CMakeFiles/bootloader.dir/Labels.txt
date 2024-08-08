@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/CMakeFiles/bootloader
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/CMakeFiles/bootloader.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/CMakeFiles/bootloader-complete.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+R:/ROP/ROP-Audio-Vibration/esp-driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
