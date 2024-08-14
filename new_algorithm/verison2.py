@@ -12,15 +12,29 @@ import matplotlib.pyplot as plt
 import timeit
 
 # 归一化，输出【0，1】
-def norm(data, target_min, target_max):
+def norm(data):
 
     min_value = np.min(data)
     max_value = np.max(data)
 
-    nor_data = ((data - min_value) / (max_value - min_value)) * (target_max - target_min)
-    nor_data = nor_data.astype(int)
+    nor_data = ((data - min_value) / (max_value - min_value))
 
     return nor_data
+
+# 线性映射
+def linear_mapping(data, orig_range, target_range):
+    orig_min, orig_max = orig_range
+    target_min, target_max = target_range
+
+    data = np.array(data)
+
+    # 线性映射公式
+    mapped_data = target_min + (data - orig_min) * (target_max - target_min) / (orig_max - orig_min)
+    
+    # 取整
+    mapped_data = mapped_data.astype(int)
+    
+    return mapped_data
 
 # 提取音频指定频率范围内能量
 def sound_power_db(waveform, sr, event_freq, freq_min, freq_max):
@@ -51,7 +65,8 @@ def sound_power_db(waveform, sr, event_freq, freq_min, freq_max):
 def db_2_stimulation_mag(db, mag_min, mag_max):
 
     # 对能量进行归一化，范围是患者电刺激感知阈值到痛阈
-    stim_mag = norm(data=db, target_min=mag_min, target_max=mag_max)
+    norm_mag = norm(data=db)
+    stim_mag = linear_mapping(data=norm_mag, orig_range=(0,1), target_range=(mag_min,mag_max))
 
     return stim_mag
 
@@ -89,8 +104,8 @@ noise_freq_min = 7000
 noise_freq_max = 8000
 
 # 设置电刺激强度（幅度）范围
-elec_stim_mag_min = 0 # 感知阈值
-elec_stim_mag_max = 255 # 痛阈
+elec_stim_mag_min = 50 # 感知阈值
+elec_stim_mag_max = 250 # 痛阈
 
 # 使用演示
 if __name__ == "__main__":

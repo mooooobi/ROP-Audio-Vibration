@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 加载音频文件
-filename = r'D:\ROP-Audio-Vibration\audio\kick.wav'
+filename = r'D:\ROP-Audio-Vibration\output_narrowband_noise.wav'
 waveform, sr = librosa.load(filename, sr=None)
 
 # 执行FFT
