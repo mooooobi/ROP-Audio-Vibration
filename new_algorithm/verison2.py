@@ -73,8 +73,11 @@ def db_2_stimulation_mag(db, mag_min, mag_max):
 # 输出每个事件（片段）的电刺激强度（幅度）到指定文件
 def gen_file(data, output_file_path):
     with open(output_file_path, "w") as file:
+        print(len(data))
         for i in range(len(data)):
-            file.write(f"{data[i]}\n")
+            file.write(f"{data[i]}")
+            if(i != len(data) - 1):
+                file.write(",")
 
 # 图形化显示电刺激强度（幅度）的变化
 def show_vibration(data):
@@ -111,8 +114,8 @@ elec_stim_mag_max = 250 # 痛阈
 if __name__ == "__main__":
 
     # 加载音频，这一步可提前处理，得到waveform和sr即可
-    filename = r'D:\ROP-Audio-Vibration\audio\spectre.mp3'
-    output_file = r'D:\ROP-Audio-Vibration\test\output_v2.txt'
+    filename = r"R:\ROP\ROP-Audio-Vibration\new_algorithm\faded.wav"
+    output_file = r'R:\ROP\ROP-Audio-Vibration\new_algorithm\output_v2.txt'
     waveform, sr = librosa.load(filename, sr=sample_rate)
 
     # 根据频率范围，得到每个片段的能量
