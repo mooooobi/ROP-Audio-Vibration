@@ -9,6 +9,7 @@ def generate_white_noise(duration, sample_rate):
     return white_noise
 
 # 创建带通滤波器
+# 椭圆滤波器
 def ellip_filter(data, lowcut, highcut, sample_rate, rp, rs, order=3):
     nyquist = 0.5 * sample_rate
     low = lowcut / nyquist
@@ -17,6 +18,7 @@ def ellip_filter(data, lowcut, highcut, sample_rate, rp, rs, order=3):
     y = lfilter(b, a, data)
     return y
 
+# 巴特沃兹滤波器
 def butter_filter(data, lowcut, highcut, sample_rate, order=5):
     nyquist = 0.5 * sample_rate
     low = lowcut / nyquist
