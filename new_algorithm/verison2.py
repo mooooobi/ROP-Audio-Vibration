@@ -21,6 +21,11 @@ def norm(data):
 
     return nor_data
 
+#小于阈值的数值置为阈值
+def thre_ReLU(data, threshold):
+    relu_data = [x if x >= threshold else threshold for x in data]
+    return relu_data
+
 # 线性映射
 def linear_mapping(data, orig_range, target_range):
     orig_min, orig_max = orig_range
@@ -60,6 +65,14 @@ def sound_power_db(waveform, sr, event_freq, freq_min, freq_max):
     frame_db = 10 * np.log10(target_power / reference_power + 1e-10)  # +1e-10防止log(0)
 
     return frame_db
+
+#优化副歌部分电刺激体感变化不明显的问题
+#对强度范围线性放大，低于阈值部分置最低值
+def optimaize_mag(data, ratio, mag_min, mag_max):
+    threshold = int(mag_min + ratio * (mag_max - mag_min))
+    relu_data = thre_ReLU(data, threshold)
+    opt_mag = linear_mapping(data=relu_data, orig_range=(threshold, mag_max), target_range=(mag_min, mag_max))
+    return opt_mag
 
 # 能量映射为电刺激强度（幅度）
 def db_2_stimulation_mag(db, mag_min, mag_max):
@@ -107,15 +120,18 @@ noise_freq_min = 7000
 noise_freq_max = 8000
 
 # 设置电刺激强度（幅度）范围
-elec_stim_mag_min = 50 # 感知阈值
+elec_stim_mag_min = 30 # 感知阈值
 elec_stim_mag_max = 250 # 痛阈
+
+# 设置优化比例，比例越大，副歌部分强度变化越明显，但其他部分强度变低
+opt_ratio = 0.25
 
 # 使用演示
 if __name__ == "__main__":
 
     # 加载音频，这一步可提前处理，得到waveform和sr即可
-    filename = r"R:\ROP\ROP-Audio-Vibration\new_algorithm\faded.wav"
-    output_file = r'R:\ROP\ROP-Audio-Vibration\new_algorithm\output_v2.txt'
+    filename = r"D:\ROP-Audio-Vibration\new_algorithm\faded.wav"
+    output_file = r'D:\ROP-Audio-Vibration\new_algorithm\output_v2.txt'
     waveform, sr = librosa.load(filename, sr=sample_rate)
 
     # 根据频率范围，得到每个片段的能量
@@ -124,9 +140,12 @@ if __name__ == "__main__":
     # 能量转为电刺激强度
     mag = db_2_stimulation_mag(db=db, mag_min=elec_stim_mag_min, mag_max=elec_stim_mag_max)
 
+    # 如有需要，增加opt_ratio参数，优化强度，增强副歌部分体感变化
+    mag = optimaize_mag(data=mag, ratio=opt_ratio, mag_min=elec_stim_mag_min, mag_max=elec_stim_mag_max)
+
     # 输出到文件
     gen_file(data=mag, output_file_path=output_file)
 
     # #如有需要，图形化显示
-    # show_vibration(data=mag)
+    show_vibration(data=mag)
 

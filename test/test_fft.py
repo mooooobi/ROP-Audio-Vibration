@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 加载音频文件
+filename = r'D:\ROP-Audio-Vibration\sample_noise\20240828_103746.mp3'
+#filename = r'D:\ROP-Audio-Vibration\noise.wav'
+#filename = r'D:\ROP-Audio-Vibration\output_noise.wav'
 filename = r'D:\ROP-Audio-Vibration\output_narrowband_noise.wav'
 waveform, sr = librosa.load(filename, sr=None)
 
