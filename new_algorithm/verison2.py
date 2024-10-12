@@ -116,15 +116,15 @@ sample_rate = 16000
 event_freq = 5
 
 # 设置掩蔽噪声频率范围
-noise_freq_min = 7000
-noise_freq_max = 8000
+noise_freq_min = 7127
+noise_freq_max = 8980
 
 # 设置电刺激强度（幅度）范围
-elec_stim_mag_min = 30 # 感知阈值
-elec_stim_mag_max = 250 # 痛阈
+elec_stim_mag_min = 0 # 感知阈值
+elec_stim_mag_max = 255 # 痛阈
 
 # 设置优化比例，比例越大，副歌部分强度变化越明显，但其他部分强度变低
-opt_ratio = 0.25
+opt_ratio = 0.4
 
 # 使用演示
 if __name__ == "__main__":
@@ -147,5 +147,5 @@ if __name__ == "__main__":
     gen_file(data=mag, output_file_path=output_file)
 
     # #如有需要，图形化显示
-    show_vibration(data=mag)
+    #show_vibration(data=mag)
 
