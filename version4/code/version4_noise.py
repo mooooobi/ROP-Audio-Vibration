@@ -43,14 +43,14 @@ sample_rate = 44100  # 采样率，单位为Hz
 order = 2  # 滤波器的阶数
 total_time = 300
 
-# 设定通带频率，以下二者选其一
+###  此处修改频率范围，两种方法选其一  ###
 # 方法一：直接设置
 lowcut = 7127 # 带通滤波器的低端频率，单位为Hz
 highcut = 8980  # 带通滤波器的高端频率，单位为Hz
 
 # # 方法二：通过中心频率以及倍频程计算得到
-# center_freq = 125 # 设置中心频率
-# lowcut, highcut = noise_range_gen(center_freq=center_freq, fraction=1/6) # 根据中心频率生成掩蔽噪声频率范围
+center_freq = 4000 # 设置中心频率
+lowcut, highcut = noise_range_gen(center_freq=center_freq, fraction=1/6) # 根据中心频率生成掩蔽噪声频率范围
 
 # 使用演示
 if __name__ == "__main__":
@@ -72,5 +72,9 @@ if __name__ == "__main__":
     # 合成响5s停5s的掩蔽噪声
     noise = np.hstack([np.hstack((noise_basic, silence)) for i in range(times)])
 
+    stereo_noise = np.stack((noise, noise), axis=-1)
+
     # 将生成的窄带噪声保存为WAV文件
-    write(r"D:\ROP-Audio-Vibration\version4\noise_wav\noise.wav", sample_rate, np.int16(noise * 32767))
+    write(r"D:\ROP-Audio-Vibration\version4\forSDcard\noise.wav", sample_rate, np.int16(stereo_noise * 32767))
+    
+    print("Success")
