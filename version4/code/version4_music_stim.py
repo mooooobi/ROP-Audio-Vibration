@@ -179,7 +179,7 @@ mag_thre2 = 120
 effective_mean = 85
 
 
-###  此处修改频率范围，两种方法选其一  ###
+###!  此处修改频率范围，两种方法选其一  ###
 # 设置掩蔽噪声频率范围
 noise_freq_min = 400
 noise_freq_max = 2000
