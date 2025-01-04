@@ -192,8 +192,8 @@ noise_freq_min, noise_freq_max = noise_range_gen(center_freq=center_freq, fracti
 if __name__ == "__main__":
 
     # 加载音频，这一步可提前处理，得到waveform和sr即可
-    filename = r"D:\ROP-Audio-Vibration\version4\music_wav\08.wav"
-    output_file = r'D:\ROP-Audio-Vibration\version4\forSDcard\08.txt'
+    filename = r"version4\music_wav\08.wav"
+    output_file = r'version4\forSDcard\08.txt'
     waveform, sr = librosa.load(filename, sr=sample_rate)
 
     # # 根据频率范围，得到每个片段的能量
