@@ -75,6 +75,6 @@ if __name__ == "__main__":
     stereo_noise = np.stack((noise, noise), axis=-1)
 
     # 将生成的窄带噪声保存为WAV文件
-    write(r"D:\ROP-Audio-Vibration\version4\forSDcard\noise.wav", sample_rate, np.int16(stereo_noise * 32767))
+    write(r"version4\forSDcard\noise.wav", sample_rate, np.int16(stereo_noise * 32767))
     
     print("Success")
